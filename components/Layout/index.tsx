@@ -6,16 +6,19 @@ import TransitionManager from "./TransitionManager";
 
 interface Props {
   children: React.ReactNode;
+  navSettings: { display: boolean };
 }
-const Layout: React.FC<Props> = ({ children }) => {
+const Layout: React.FC<Props> = ({ children, navSettings }) => {
   const { Provider, pageState, activePage } = usePageTransition(children);
 
   return (
     <ThemeProvider>
       <Provider {...pageState}>
         <TransitionManager>
-          <Navigation />
-          <div className="w-screen">{activePage}</div>
+          {navSettings?.display !== false && <Navigation />}
+
+          <div className="w-screen h-screen">{activePage}</div>
+          
         </TransitionManager>
       </Provider>
     </ThemeProvider>

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import Button from "../components/Tags/Button";
+import Button from "../components/HTMLTags/Button";
 
 export default function Home() {
   return (
@@ -13,7 +13,7 @@ export default function Home() {
         We protect your task, So you can focus on doing them !!
       </h2>
 
-      <Button className={"text-3xl bg-primary-500 mt-8 text-white px-10 py-2 rounded-sm"}> Get Started</Button>
+      <Button className={"text-3xl bg-primary-600 mt-8 text-white px-10 py-2 rounded-sm"}> Get Started</Button>
     </div>
   );
 }

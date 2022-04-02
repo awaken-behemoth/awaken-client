@@ -1,21 +1,29 @@
-import Head from "next/head";
+import { Url } from "url";
+import Hr from "../HTMLTags/Hr";
+import Input from "../HTMLTags/Input";
+import Button from "../HTMLTags/Button";
+import Notice from "../HTMLTags/Notice";
 import { useRouter } from "next/router";
-import Script from "next/script";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Url } from "url";
-import AttemptState from "../../../enum/AttemptState";
-import useControlledRequest from "../../../utils/hook/useControlledRequest";
-import DynamicHeight from "../../Effect/DynamicHeight";
-import Button from "../../HTMLTags/Button";
-import Hr from "../../HTMLTags/Hr";
-import Input from "../../HTMLTags/Input";
-import Notice from "../../HTMLTags/Notice";
-import GoogleAuthHeader from "./GoogleAuthHeader";
 import UserCredentials from "./UserCredentials";
+import GoogleAuthHeader from "./GoogleAuthHeader";
+import DynamicHeight from "../Effect/DynamicHeight";
+import useControlledRequest from "../../utils/hook/useControlledRequest";
+import Link from "next/link";
+import LazyDynamicHeight from "../Effect/LazyDynamicHeight";
 
 interface Props {
-  logUserIn: (userCredentials: UserCredentials) => Promise<any>;
+  /**
+   * The function that should be users to create a new user
+   * upon click of the registration or google login button;
+   */
+
+  logUserIn: (userCredentials: UserCredentials) => Promise<{ status: number }>;
+
+  /**
+   * Redirection Uri after user registration
+   */
   redirectURL?: Url | string;
 }
 
@@ -25,7 +33,6 @@ const LoginForm: React.FC<Props> = ({ logUserIn, redirectURL }) => {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm();
 
@@ -41,7 +48,7 @@ const LoginForm: React.FC<Props> = ({ logUserIn, redirectURL }) => {
     if (redirectURL && controller.status == 200) {
       router.push(redirectURL);
     }
-  }, [controller.status]);
+  }, [controller.status, redirectURL, router]);
 
   return (
     <div
@@ -52,13 +59,13 @@ const LoginForm: React.FC<Props> = ({ logUserIn, redirectURL }) => {
       <form className="flex flex-col">
         <h1 className="text-3xl font-extrabold text-primary-800 mb-4">Login</h1>
 
-        <DynamicHeight dependencies={[controller.status]}>
+        <LazyDynamicHeight dependencies={[controller.status]}>
           {controller.status === 401 ? (
             <Notice color={"red"}>Wrong username or password</Notice>
           ) : (
             ""
           )}
-        </DynamicHeight>
+        </LazyDynamicHeight>
 
         <Input
           label="Email"
@@ -81,15 +88,16 @@ const LoginForm: React.FC<Props> = ({ logUserIn, redirectURL }) => {
         </Button>
       </form>
       <Hr padding="0.5em" className="text-gray-500">
-        {" "}
-        or login with{" "}
+        or login with
       </Hr>
 
       <Button className="mt-2 px-7 border-red-500  text-red-800 py-2 border">
         Google
       </Button>
 
-      <a className="mt-8 text-primary-900 underline">Forgot Password?</a>
+      <Link href="/">
+        <a className="mt-8 text-primary-900 underline">Forgot Password?</a>
+      </Link>
     </div>
   );
 };

@@ -1,22 +1,29 @@
-import React, { useEffect } from "react";
-import Hr from "../../HTMLTags/Hr";
-import Input from "../../HTMLTags/Input";
-import { useForm } from "react-hook-form";
-import Button from "../../HTMLTags/Button";
-import UserCredentials from "./UserCredentials";
-import Head from "next/head";
-import Script from "next/script";
-import useGoogleAuth from "./useGoogleAuth";
-import GoogleAuthHeader from "./GoogleAuthHeader";
-import useControlledRequest from "../../../utils/hook/useControlledRequest";
-import AttemptState from "../../../enum/AttemptState";
 import { Url } from "url";
+import Hr from "../HTMLTags/Hr";
+import Input from "../HTMLTags/Input";
+import Notice from "../HTMLTags/Notice";
 import { useRouter } from "next/router";
-import DynamicHeight from "../../Effect/DynamicHeight";
-import Notice from "../../HTMLTags/Notice";
+import Button from "../HTMLTags/Button";
+import React, { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import useGoogleAuth from "./useGoogleAuth";
+import UserCredentials from "./UserCredentials";
+import GoogleAuthHeader from "./GoogleAuthHeader";
+import AttemptState from "../../enum/AttemptState";
+import DynamicHeight from "../Effect/DynamicHeight";
+import useControlledRequest from "../../utils/hook/useControlledRequest";
+import LazyDynamicHeight from "../Effect/LazyDynamicHeight";
 
 interface Props {
-  createUser: (userCredentials: UserCredentials) => Promise<any>;
+  /**
+   * The function that should be users to create a new user
+   * upon click of the registration or google login button;
+   */
+  createUser: (userCredentials: UserCredentials) => Promise<{ status: number }>;
+
+  /**
+   * Redirection Uri after user registration
+   */
   redirectURL?: Url | string;
 }
 
@@ -33,12 +40,11 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
     if (redirectURL && controller.status == 200) {
       router.push(redirectURL);
     }
-  }, [controller.status]);
+  }, [controller.status, redirectURL, router]);
 
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<{
     password: string;
@@ -66,7 +72,7 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
           Register
         </h1>
 
-        <DynamicHeight dependencies={[controller.status]}>
+        <LazyDynamicHeight dependencies={[controller.status]}>
           {controller.status === 409 &&
           controller.state !== AttemptState.LOADING ? (
             <Notice color={"red"}>
@@ -75,7 +81,7 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
           ) : (
             ""
           )}
-        </DynamicHeight>
+        </LazyDynamicHeight>
 
         <Input
           label="Email"
@@ -98,7 +104,12 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
         ></Input>
 
         <DynamicHeight dependencies={[errors.password]}>
-          {errors.password && <Notice color={"yellow"} className={" mb-2"}> {errors.password}</Notice>}
+          {errors.password && (
+            <Notice color={"yellow"} className={" mb-2"}>
+              {" "}
+              {errors.password}
+            </Notice>
+          )}
         </DynamicHeight>
 
         <Button

@@ -1,25 +1,29 @@
-import { motion, MotionProps, MotionStyle, useAnimation } from "framer-motion";
-import React from "react";
+import { motion,useAnimation } from "framer-motion";
+import React, { DependencyList } from "react";
 import {
-  HTMLProps,
-  ReactNode,
-  RefAttributes,
-  useEffect,
   useRef,
   useState,
+  HTMLProps,
+  ReactNode,
+  useEffect,
 } from "react";
-import Activity from "../../enum/Activity";
 
-interface Props extends HTMLProps<HTMLDivElement> {
-  dependencies: any[]
+interface DynamicHeightProps extends HTMLProps<HTMLDivElement> {
+  /**
+   * List of values that react the component should watch. When the value changes, 
+   * {@link DynamicHeight} will update its height; Be careful while passing the dependencies
+   * as react cannot watch for its correctness
+   */
+  dependencies: DependencyList
 }
+
 /**
  * Responsive component that resizes depending of the size of its content;
  *
  * > IMPORTANT: Setting an height or a padding son this component is not supported
  *
  */
-const DynamicHeight: React.FC<Props> = ({ children,dependencies, ...props }) => {
+const DynamicHeight: React.FC<DynamicHeightProps> = ({ children,dependencies, ...props }) => {
   const [currentChildren, setCurrentChildren] = useState<ReactNode>(children);
 
   const containerRef = useRef<HTMLDivElement>();
@@ -35,20 +39,22 @@ const DynamicHeight: React.FC<Props> = ({ children,dependencies, ...props }) => 
     const currentHeight = containerRef.current.clientHeight;
     height.set({ height: currentHeight });
     setCurrentChildren(children);
-  }, dependencies);
+
+    // eslint-disable-next-line
+  }, [...dependencies, height, children]);
 
   useEffect(() => {
     // When the controlled children is swapped with animate the height property to the height
     // of the current height.
     const futureHeight = containerRef.current.clientHeight;
     height.start({ height: futureHeight });
-  }, [currentChildren]);
+  }, [currentChildren, height]);
 
   return (
     <motion.div
       animate={height}
       onAnimationComplete={() => {
-        // when the animation completes, set the height property to auto so that everything is responsive;
+        // when the animation completes, we set the height property to auto so that everything is responsive;
 
         height.set({ height: "auto" });
       }}

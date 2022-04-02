@@ -14,7 +14,7 @@ const TransitionManager: React.FC<Props> = ({ children }) => {
     page.addEventListener("onExit", (ctx) => {
       page.waitFor("fade-out");
     });
-  }, []);
+  }, [page]);
 
 
   return (

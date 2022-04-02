@@ -1,18 +1,20 @@
-import axios from "axios";
+import Head from "next/head";
 import Link from "next/link";
-import LoginForm from "../components/Blocks/Auth/LoginForm";
-import UserCredentials from "../components/Blocks/Auth/UserCredentials";
+import LoginForm from "../components/Auth/LoginForm";
+import LogUserIn from "../components/Auth/logUserIn";
 
 function Login() {
-
-  const LogUserIn = async  (userCredentials: UserCredentials) => {
-    return await axios
-      .post("/api/auth/login", userCredentials)
-      .catch((error) => error.response);
-  }
-
   return (
     <div className="flex h-full">
+      <Head>
+        <title>Login awaken</title>
+        <meta
+          name="description"
+          content={
+            "Create a new Awaken account. Start being productive and join a community of doers."
+          }
+        ></meta>
+      </Head>
       <div className=" px-8 text-white hidden md:flex w-2/5 h-100%  bg-black shrink-0 border-r-8 border-primary-600 justify-center flex-col">
         <h1 className="text-transparent bg-gradient-to-tr from-primary-300  to-primary-800 bg-clip-text  text-5xl font-extrabold max-w-[35ch] w-fit">
           Welcome back, we missed you !!!
@@ -23,7 +25,7 @@ function Login() {
         </h2>
       </div>
       <div className="bg-gray-50 w-full flex relative overflow-auto py-12">
-        <LoginForm logUserIn={LogUserIn } redirectURL={"/dashboard"} />
+        <LoginForm logUserIn={LogUserIn} redirectURL={"/dashboard"} />
 
         <nav className="absolute text-gray-600 right-0 px-10  top-0 py-2">
           New here ? &nbsp;

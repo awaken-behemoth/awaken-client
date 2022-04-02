@@ -2,18 +2,22 @@
 
 const nextConfig = {
   reactStrictMode: true,
-  async rewrites(){
+  async rewrites() {
     return [
       {
-        source: '/api/auth/:path*',
+        source: "/api/auth/:path*",
         destination: "http://localhost:8080/auth/:path*",
       },
       {
-        source: '/api/user/:path*',
+        source: "/api/user/:path*",
         destination: "http://localhost:8080/user/:path*",
-      }
-    ]
-  }
-}
+      },
+    ];
+  },
+  i18n: {
+    locales: ["en"],
+    defaultLocale: "en",
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

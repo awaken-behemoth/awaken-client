@@ -21,4 +21,6 @@ const Link: React.FC<LinkProps> = React.forwardRef(
   }
 );
 
+Link.displayName = "Link";
+
 export default Link;

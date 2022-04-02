@@ -1,4 +1,3 @@
-import { Head } from "next/document";
 import React from "react";
 import usePageTransition from "../../utils/hook/usePageTransition";
 import Navigation from "./Navigation";

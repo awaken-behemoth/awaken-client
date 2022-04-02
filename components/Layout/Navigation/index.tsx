@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
-import { useRoutingStateContext } from "../../../utils/hook/usePageTransition";
 import DefaultNavigation from "./DefaultNavigation";
+import EmptyComponent from "./EmptyComponent";
 import NavigationConfig from "./NavigationConfig";
 import NavigationPreset from "./NavigationPreset";
 
@@ -13,15 +13,19 @@ const Navigation: React.FC = ({ children }) => {
     preset: NavigationPreset.DEFAULT,
   });
 
-  let ActiveNav;
+  let ActiveNav : React.FC;
 
   switch (config.preset) {
+
     case NavigationPreset.NONE:
-      ActiveNav = () => <></>;
+      ActiveNav = EmptyComponent;
       break;
+
     default:
       ActiveNav = DefaultNavigation;
   }
+
+  ActiveNav.displayName = "ActiveNav";
 
   return (
     <NavigationContext.Provider value={{ setConfig }}>
@@ -36,7 +40,7 @@ export const useNavigationConfig = (config: NavigationConfig) => {
 
   useEffect(() => {
     setConfig(config);
-  }, []);
+  }, [config, setConfig]);
 };
 
 export default Navigation;

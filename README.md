@@ -8,3 +8,8 @@
 # Dynamic theme with local store backup: 8hours of development
 
 [![Watch the video](https://i.imgur.com/vKb2F1B.png)](https://www.awesomescreenshot.com/video/7998223?key=20918b4a3944eb82a8e5803b7a94c6f2)
+
+# Lost track of time
+
+This week was a bit busy. Been working on authenticating/ authorization flows on the backend with java. Should be about seven since the last update.
+Authentication is secure and working fine. Next week I will be writing some end to end test and polishing the google third party authentication.

@@ -3,14 +3,15 @@ import Layout from "../components/Layout";
 
 
 interface Props {
-  Component: React.FC & { navSettings: { display: boolean}},
+  Component: React.FC & {  getNavigation: () => React.FC },
   pageProps: any
 
 }
 const MyApp: React.FC<Props> = ({ Component, pageProps }) => {
 
+
   return (
-    <Layout  navSettings={Component.navSettings}>
+    <Layout>
       <Component {...pageProps} />
     </Layout>
   );

@@ -1,7 +1,8 @@
 import Link from "next/link";
-import Button from "../HTMLTags/Button";
+import Button from "../../HTMLTags/Button";
+import NavigationProps from "./NavigationProps";
 
-interface NavigationProps {}
+
 
 const Navigation: React.FC<NavigationProps> = () => {
   return (

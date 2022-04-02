@@ -1,30 +1,23 @@
+import React from "react";
 import {
-  AnchorHTMLAttributes,
   ButtonHTMLAttributes,
   DetailedHTMLProps,
 } from "react";
 
-interface AnchorProps
-  extends DetailedHTMLProps<
-    AnchorHTMLAttributes<HTMLAnchorElement>,
-    HTMLAnchorElement
-  > {}
 interface ButtonProps
   extends DetailedHTMLProps<
     ButtonHTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   > {}
 
-type Button<T> = T extends string ? AnchorProps : ButtonProps;
-
-const Button = <T extends unknown>( {children,...props} : { href?: T } & Button<T>) => {
-  if (props.href) {
-    //@ts-ignore
-    return <a {...props}>{children}</a>;
-  } else {
-    return <button {...props}>{children}</button>;
+const Button: React.FC<ButtonProps> = React.forwardRef(
+  ({ children, disabled, ...props }, ref: any) => {
+    return (
+      <button {...props} ref={ref}>
+        {children}
+      </button>
+    );
   }
-};
-
+);
 
 export default Button;

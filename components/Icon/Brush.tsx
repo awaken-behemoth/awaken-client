@@ -10,7 +10,7 @@ const Brush: React.FC<BrushProps> = ({ ...props }) => {
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <g clip-path="url(#clip0_1_2)">
+      <g clipPath="url(#clip0_1_2)">
         <path
           d="M30.156 0.570997C29.152 -0.335003 28.49 0.108997 28.49 0.108997L12.323 15.732L16.921 19.875L30.788 2.181C30.788 2.181 31.163 1.478 30.156 0.570997Z"
           fill="#FFCA42"

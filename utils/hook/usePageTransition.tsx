@@ -1,5 +1,7 @@
 "strict";
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useRef } from "react";
+import { useFirstTimeLoading } from "react-with-daniel";
 
 type lifeCycleCallback = (ctx: { pageId: any; nextPageId: any }) => void;
 
@@ -18,10 +20,14 @@ interface lifeCycle {
 
 // type waitList = Set<string>
 export const usePageTransition = (children: React.ReactNode ) => {
+  const router = useRouter();
+
   const [activePage, setActivePage] = React.useState(children);
 
   // waitList is a set of all id with whose waiFor( id ) was called.
   const waitListRef = React.useRef(new Set() as Set<string>);
+  const firstTimeLoading = useFirstTimeLoading();
+  const pathRef = useRef(router.asPath);
 
   const lifeCyclesRef = React.useRef<lifeCycle>({
     beforeSwap: [],
@@ -36,7 +42,6 @@ export const usePageTransition = (children: React.ReactNode ) => {
     setPageState(newPageState);
   }
 
-  // const pageState = useSequentialState(["exit", "enter"] as const);
 
   const executeLifeCycleCallBack = (lifeCycle: keyof lifeCycle) => {
     for (const callback of lifeCyclesRef.current[lifeCycle]) {
@@ -49,6 +54,7 @@ export const usePageTransition = (children: React.ReactNode ) => {
 
     executeLifeCycleCallBack("beforeSwap");
 
+    pathRef.current = router.asPath;
     setActivePage(children);
     setPageState("enter");
 
@@ -72,10 +78,12 @@ export const usePageTransition = (children: React.ReactNode ) => {
 
 
   React.useEffect(() => {
+
+    if ( firstTimeLoading ) return;
     // there is a page change but the component is the same as the active one the page assumes a enter state;
     // If on page A. One could route to page B. The children would change but not finish updating. Then if he
     // returns to page A, the page would change but the corresponding state would be a from exit to enter.
-    if (children === activePage) {
+    if (children === activePage || !activePage ) {
       tryChange("enter");
       executeLifeCycleCallBack("onEnter");
     } else {
@@ -93,6 +101,7 @@ export const usePageTransition = (children: React.ReactNode ) => {
     tryChange,
     removeHold,
     currentState: pageState,
+    currentPath: pathRef.current,
     addEventListener: (event: keyof lifeCycle, callback: lifeCycleCallback) => {
       const validKeys = Object.keys(lifeCyclesRef.current);
       if (!validKeys.includes(event)) return;
@@ -115,14 +124,16 @@ export const useRoutingStateContext = () => {
 };
 
 interface RoutingStateContext {
+  currentPath: string;
   waitFor: (id: string) => void;
-  removeHold: (id: string) => void;
   currentState: "exit" | "enter";
+  removeHold: (id: string) => void;
   tryChange: (desiredState: "exit" | "enter") => void;
   addEventListener: (event: keyof lifeCycle, callback: lifeCycleCallback) => void;
 }
 
 const RoutingStateContext = React.createContext<RoutingStateContext>({
+  currentPath: "",
   currentState: "enter",
   waitFor: () => undefined,
   removeHold: () => undefined,

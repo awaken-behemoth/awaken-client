@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import FadeIn from "../Effect/FadeIn";
 import Brush from "../Icon/Brush";
 
@@ -18,7 +18,7 @@ interface Theme {
 
 type Themes = typeof themes;
 
-const themes = {
+export const themes = {
   gray: {
     "--p-50": "249 250 251",
     "--p-100": "244 245 247",
@@ -152,6 +152,7 @@ const themes = {
     "--p-900": "117 26 61",
   },
 };
+
 interface Props {
   children: React.ReactNode;
 }
@@ -159,15 +160,17 @@ const ThemeProvider: React.FC<Props> = ({ children }) => {
   const [isVisible, setIsVisible] = useState(false);
   const [activeTheme, _setActiveTheme] = useState<keyof Themes>("blue");
 
-  useLayoutEffect(() => {
-    _setActiveTheme(localStorage.getItem("primaryTheme") as keyof Themes || "blue");
+  useEffect(() => {
+    _setActiveTheme(
+      (localStorage.getItem("primaryTheme") as keyof Themes) || "blue"
+    );
   }, []);
 
   const setActiveTheme = (theme: keyof Themes) => {
     _setActiveTheme(theme);
     localStorage.setItem("primaryTheme", theme);
   };
-  
+
   return (
     <>
       <div
@@ -189,7 +192,7 @@ const ThemeProvider: React.FC<Props> = ({ children }) => {
           >
             {Object.keys(themes).map((theme: keyof Themes) => {
               return (
-                <>
+                <div key={theme}>
                   <input id={theme} type="radio" className="hidden"></input>
                   <label
                     htmlFor={theme}
@@ -203,7 +206,7 @@ const ThemeProvider: React.FC<Props> = ({ children }) => {
                   >
                     {theme}
                   </label>
-                </>
+                </div>
               );
             })}
           </motion.div>

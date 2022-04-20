@@ -1,5 +1,5 @@
 
-# Progression of blazer
+# Progression of awaken-project
 
 ## Successful implementation of login and logout page : 6hours of development
 

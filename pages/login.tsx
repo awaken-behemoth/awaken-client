@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Head from "next/head";
 import Link from "next/link";
 import LoginForm from "../components/Auth/LoginForm";
@@ -5,7 +6,7 @@ import LogUserIn from "../components/Auth/logUserIn";
 
 function Login() {
   return (
-    <div className="flex h-full">
+    <motion.div className="flex h-full" key="Login"  >
       <Head>
         <title>Login awaken</title>
         <meta
@@ -36,7 +37,7 @@ function Login() {
           </Link>
         </nav>
       </div>
-    </div>
+    </motion.div>
   );
 }
 

@@ -3,9 +3,9 @@ import Link from "next/link";
 import createUser from "../components/Auth/createUser";
 import RegistrationForm from "../components/Auth/RegistrationForm";
 
-function Login() {
+function Register() {
   return (
-    <div className="flex h-full">
+    <div className="flex h-full" key="Register">
       <Head>
         <title>SignIn awaken</title>
         <meta
@@ -42,4 +42,5 @@ function Login() {
   );
 }
 
-export default Login;
+
+export default Register;

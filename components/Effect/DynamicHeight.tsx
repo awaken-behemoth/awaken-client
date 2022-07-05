@@ -4,8 +4,7 @@ import {
   MotionProps,
   useAnimation,
 } from "framer-motion";
-import React, { DependencyList } from "react";
-import { useRef, useState, HTMLProps, ReactNode, useEffect } from "react";
+import React from "react";
 
 interface DynamicHeightProps extends MotionProps {}
 

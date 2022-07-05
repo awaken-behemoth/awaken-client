@@ -1,23 +1,26 @@
+import { AnimatePresence, motion } from "framer-motion";
 import React from "react";
-import usePageTransition from "../../utils/hook/usePageTransition";
 import ThemeProvider from "./ThemeProvider";
-import TransitionManager from "./TransitionManager";
 
 interface Props {
-  children: React.ReactNode;
+  child: React.ReactElement<any, React.JSXElementConstructor<any>>;
 }
 
-const Layout: React.FC<Props> = ({ children }) => {
-  const { Provider, pageState, activePage } = usePageTransition(children as React.ReactNode & {type: {prototype : string}});
-
+const Layout: React.FC<Props> = ({ child }) => {
   return (
     <>
       <ThemeProvider>
-        <Provider {...pageState}>
-          <TransitionManager>
-            <div className="w-screen h-screen">{activePage}</div>
-          </TransitionManager>
-        </Provider>
+        <AnimatePresence exitBeforeEnter>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            key={child.type.name}
+            className="w-screen h-screen"
+          >
+            {child}
+          </motion.div>
+        </AnimatePresence>
       </ThemeProvider>
     </>
   );

@@ -1,12 +1,7 @@
-import Head from "next/head";
-import Image from "next/image";
-import Link from "next/link";
 import Button from "../components/HTMLTags/Button";
-import { useNavigationConfig } from "../components/Layout/Navigation";
-import NavigationPreset from "../components/Layout/Navigation/NavigationPreset";
 
 function Dashboard() {
-  useNavigationConfig({ preset: NavigationPreset.NONE });
+
   return (
     <div className="h-96 flex  place-items-center flex-col text-center pt-48 place-content-center gap-4">
       <h1 className=" text-6xl font-extrabold max-w-[35ch] w-fit">

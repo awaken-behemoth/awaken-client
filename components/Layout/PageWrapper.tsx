@@ -1,6 +1,5 @@
 import React from "react";
 import usePageTransition from "../../utils/hook/usePageTransition";
-import Navigation from "./Navigation";
 import ThemeProvider from "./ThemeProvider";
 import TransitionManager from "./TransitionManager";
 
@@ -9,16 +8,14 @@ interface Props {
 }
 
 const Layout: React.FC<Props> = ({ children }) => {
-  const { Provider, pageState, activePage } = usePageTransition(children);
+  const { Provider, pageState, activePage } = usePageTransition(children as React.ReactNode & {type: {prototype : string}});
 
   return (
     <>
       <ThemeProvider>
         <Provider {...pageState}>
           <TransitionManager>
-            <Navigation>
-              <div className="w-screen h-screen">{activePage}</div>
-            </Navigation>
+            <div className="w-screen h-screen">{activePage}</div>
           </TransitionManager>
         </Provider>
       </ThemeProvider>

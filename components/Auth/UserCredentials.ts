@@ -5,7 +5,7 @@ type UserCredentials =
       password: string;
     }
   | {
-      googleId: string;
+      googleIdToken: string;
     };
 
 export default UserCredentials;

@@ -10,7 +10,6 @@ import useGoogleAuth from "./useGoogleAuth";
 import UserCredentials from "./UserCredentials";
 import GoogleAuthHeader from "./GoogleAuthHeader";
 import AttemptState from "../../enum/AttemptState";
-import DynamicHeight from "../Effect/DynamicHeight";
 import useControlledRequest from "../../utils/hook/useControlledRequest";
 import LazyDynamicHeight from "../Effect/LazyDynamicHeight";
 
@@ -29,7 +28,10 @@ interface Props {
 
 const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
   const router = useRouter();
+  const { getGoogleIdToken } = useGoogleAuth();
+
   const controller = useControlledRequest(2000);
+
   const requestUserCreation = (userCredentials: UserCredentials) => {
     controller.makeRequest(async () => {
       return await createUser(userCredentials);
@@ -42,6 +44,7 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
     }
   }, [controller.status, redirectURL, router]);
 
+  // Forms controls;
   const {
     register,
     handleSubmit,
@@ -58,8 +61,6 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
     },
   });
 
-  const { login } = useGoogleAuth();
-
   return (
     <div
       className="flex flex-col p-8 m-auto bg-white border-2 border-gray-300 rounded-md w-[26rem]"
@@ -72,15 +73,14 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
           Register
         </h1>
 
-        <LazyDynamicHeight dependencies={[controller.status]}>
+        <LazyDynamicHeight>
           {controller.status === 409 &&
-          controller.state !== AttemptState.LOADING ? (
-            <Notice color={"red"}>
-              Account using these email has already been registered{" "}
-            </Notice>
-          ) : (
-            ""
-          )}
+            controller.state !== AttemptState.LOADING && (
+              <Notice color={"red"}>
+                Account using these email has already been registered
+              </Notice>
+            )}
+            
         </LazyDynamicHeight>
 
         <Input
@@ -103,14 +103,14 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
           {...register("password_confirmation", { required: true })}
         ></Input>
 
-        <DynamicHeight dependencies={[errors.password]}>
+        <LazyDynamicHeight>
           {errors.password && (
             <Notice color={"yellow"} className={" mb-2"}>
               {" "}
               {errors.password}
             </Notice>
           )}
-        </DynamicHeight>
+        </LazyDynamicHeight>
 
         <Button
           type="submit"
@@ -129,7 +129,10 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
 
       <Button
         className="mt-2 px-7 border-red-500  text-red-800 py-2 border"
-        onClick={() => login()}
+        onClick={async () => {
+          const googleIdToken = await getGoogleIdToken();
+          requestUserCreation({ googleIdToken });
+        }}
       >
         Google
       </Button>

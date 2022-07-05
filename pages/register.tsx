@@ -3,7 +3,7 @@ import Link from "next/link";
 import createUser from "../components/Auth/createUser";
 import RegistrationForm from "../components/Auth/RegistrationForm";
 
-function Register() {
+function Login() {
   return (
     <div className="flex h-full">
       <Head>
@@ -42,4 +42,4 @@ function Register() {
   );
 }
 
-export default Register;
+export default Login;

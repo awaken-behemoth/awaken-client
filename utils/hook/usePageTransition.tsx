@@ -1,7 +1,7 @@
 "strict";
 import { useRouter } from "next/router";
 import React, { useRef } from "react";
-import { useFirstTimeLoading } from "react-with-daniel";
+import useFirstTimeLoading from "./useFirstTimeLoading";
 
 type lifeCycleCallback = (ctx: { pageId: any; nextPageId: any }) => void;
 
@@ -19,7 +19,7 @@ interface lifeCycle {
  */
 
 // type waitList = Set<string>
-export const usePageTransition = (children: React.ReactNode ) => {
+export const usePageTransition = (children: React.ReactNode & {type: {prototype:string}} ) => {
   const router = useRouter();
 
   const [activePage, setActivePage] = React.useState(children);
@@ -72,8 +72,7 @@ export const usePageTransition = (children: React.ReactNode ) => {
     if (waitListRef.current.size === 0) {
       tryChange("enter");
       executeLifeCycleCallBack("onEnter");
-    }
-    // render();
+    };
   };
 
 
@@ -83,7 +82,7 @@ export const usePageTransition = (children: React.ReactNode ) => {
     // there is a page change but the component is the same as the active one the page assumes a enter state;
     // If on page A. One could route to page B. The children would change but not finish updating. Then if he
     // returns to page A, the page would change but the corresponding state would be a from exit to enter.
-    if (children === activePage || !activePage ) {
+    if (children.type.prototype === activePage.type.prototype || !activePage ) {
       tryChange("enter");
       executeLifeCycleCallBack("onEnter");
     } else {
@@ -93,6 +92,7 @@ export const usePageTransition = (children: React.ReactNode ) => {
   }, [children]);
 
   React.useEffect(() => {
+    
     if (waitListRef.current.size === 0) syncActivePage();
   }, [pageState, waitListRef.current.size]);
 

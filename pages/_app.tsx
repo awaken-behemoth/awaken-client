@@ -1,20 +1,21 @@
 import "../styles/globals.css";
-import Layout from "../components/Layout";
+import Wrapper from "../components/Layout/PageWrapper";
+import { NextPage } from "next";
+import { ReactElement, ReactNode } from "react";
+import { AppProps } from "next/app";
 
+type NextPageWithLayout = NextPage & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
 
-interface Props {
-  Component: React.FC & {  getNavigation: () => React.FC },
-  pageProps: any
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
 
-}
-const MyApp: React.FC<Props> = ({ Component, pageProps }) => {
+const MyApp: React.FC<AppPropsWithLayout> = ({ Component, pageProps }) => {
+  const getLayout = Component.getLayout ?? ((page) => page);
 
-
-  return (
-    <Layout>
-      <Component {...pageProps} />
-    </Layout>
-  );
-}
+  return <Wrapper>{getLayout(<Component {...pageProps} />)}</Wrapper>;
+};
 
 export default MyApp;

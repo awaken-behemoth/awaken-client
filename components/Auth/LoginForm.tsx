@@ -59,11 +59,9 @@ const LoginForm: React.FC<Props> = ({ logUserIn, redirectURL }) => {
       <form className="flex flex-col">
         <h1 className="text-3xl font-extrabold text-primary-800 mb-4">Login</h1>
 
-        <LazyDynamicHeight dependencies={[controller.status]}>
-          {controller.status === 401 ? (
+        <LazyDynamicHeight>
+          {controller.status === 401 ?? (
             <Notice color={"red"}>Wrong username or password</Notice>
-          ) : (
-            ""
           )}
         </LazyDynamicHeight>
 

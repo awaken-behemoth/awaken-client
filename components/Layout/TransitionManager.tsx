@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { useEffect } from "react";
 import { useRoutingStateContext } from "../../utils/hook/usePageTransition";
 
-
 interface Props {
   children: React.ReactNode;
 }
@@ -16,12 +15,10 @@ const TransitionManager: React.FC<Props> = ({ children }) => {
     });
   }, [page]);
 
-
   return (
     <motion.div
-      animate={
-        page.currentState === "exit" ? { opacity: 0 } : { opacity: 1 }
-      }
+      initial={{ opacity: 1 }}
+      animate={page.currentState === "exit" ? { opacity: 0 } : { opacity: 1 }}
       onAnimationComplete={(arg: { opacity: number }) => {
         if (arg.opacity === 0) {
           page.removeHold("fade-out");

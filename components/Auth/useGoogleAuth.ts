@@ -4,7 +4,7 @@ import addScript from "../../utils/addScript";
 
 /**
  * Load Scripts required to set up google auth2 authentication;
- * 
+ *
  * @returns a controller to manage google auth2 authentication;
  */
 const useGoogleAuth = () => {
@@ -28,31 +28,34 @@ const useGoogleAuth = () => {
   }, [firstTimeLoading]);
 
   /**
-   * Request google sign in 
-   * 
+   * Request google sign in
+   *
    */
-  const login = () => {
+  const login = async () => {
     let auth2 = window.gapi.auth2.getAuthInstance();
-    auth2.signIn();
+    await auth2.signIn();
   };
 
   /**
    * Get a user token than should e sent to the backend for user authorization
-   * 
-   * @returns user Token 
+   *
+   * @returns user Token
    */
-  const getGoogleToken = ()=> {
+  const getGoogleIdToken = async () => {
     let auth2 = window.gapi.auth2.getAuthInstance();
 
-    if (!auth2.isSignIn) {login()};
+    if (!auth2.isSignIn) {
+      await login();
+    }
 
-    const token = auth2.currentUser.get().getAuthResponse().id_token;
+    const token : string = await auth2.currentUser.get().getAuthResponse().id_token;
 
     return token;
-  }
+  };
 
   return {
     login,
+    getGoogleIdToken,
   };
 };
 

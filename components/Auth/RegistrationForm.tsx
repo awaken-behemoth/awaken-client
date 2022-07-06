@@ -3,7 +3,6 @@ import Hr from "../HTMLTags/Hr";
 import Input from "../HTMLTags/Input";
 import Notice from "../HTMLTags/Notice";
 import { useRouter } from "next/router";
-import Button from "../HTMLTags/Button";
 import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import useGoogleAuth from "./useGoogleAuth";
@@ -112,7 +111,7 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
           )}
         </LazyDynamicHeight>
 
-        <Button
+        <button
           type="submit"
           className="mt-2 px-7 bg-primary-700 text-white py-2 mb-4 active:bg-primary-600"
           style={{
@@ -120,14 +119,14 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
           }}
         >
           Register
-        </Button>
+        </button>
       </form>
 
       <Hr padding="0.5em" className="text-gray-500">
         or register with
       </Hr>
 
-      <Button
+      <button
         className="mt-2 px-7 border-red-500  text-red-800 py-2 border"
         onClick={async () => {
           const googleIdToken = await getGoogleIdToken();
@@ -135,7 +134,7 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
         }}
       >
         Google
-      </Button>
+      </button>
 
       <a className="mt-8 text-primary-900 underline">Forgot Password?</a>
     </div>

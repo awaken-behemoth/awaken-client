@@ -2,7 +2,6 @@ import {
   AnimatePresence,
   motion,
   MotionProps,
-  useAnimation,
 } from "framer-motion";
 import React from "react";
 

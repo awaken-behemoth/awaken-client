@@ -1,7 +1,6 @@
 import { Url } from "url";
 import Hr from "../HTMLTags/Hr";
 import Input from "../HTMLTags/Input";
-import Button from "../HTMLTags/Button";
 import Notice from "../HTMLTags/Notice";
 import { useRouter } from "next/router";
 import React, { useEffect } from "react";
@@ -78,20 +77,20 @@ const LoginForm: React.FC<Props> = ({ logUserIn, redirectURL }) => {
           {...register("password", { required: true })}
         ></Input>
 
-        <Button
+        <button
           type="submit"
           className="mt-2 px-7 bg-primary-700 active:bg-primary-500 text-white py-2 mb-4"
         >
           Login
-        </Button>
+        </button>
       </form>
       <Hr padding="0.5em" className="text-gray-500">
         or login with
       </Hr>
 
-      <Button className="mt-2 px-7 border-red-500  text-red-800 py-2 border">
+      <button className="mt-2 px-7 border-red-500  text-red-800 py-2 border">
         Google
-      </Button>
+      </button>
 
       <Link href="/">
         <a className="mt-8 text-primary-900 underline">Forgot Password?</a>

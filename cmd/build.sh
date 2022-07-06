@@ -1,2 +1,5 @@
+#!/bin/bash
 
-npm run build 
+cd "$(dirname "$0")" && cd ..
+
+docker build -t awaken-client .

@@ -1,5 +1,4 @@
-import React from 'react';
-import { useFirstTimeLoading } from 'react-with-daniel';
+import React, { useEffect } from 'react';
 
 import addScript from '../../utils/addScript';
 
@@ -9,11 +8,8 @@ import addScript from '../../utils/addScript';
  * @returns a controller to manage google auth2 authentication;
  */
 const useGoogleAuth = () => {
-  const firstTimeLoading = useFirstTimeLoading();
 
-  React.useEffect(() => {
-    if (!firstTimeLoading) return;
-
+  useEffect(() => {
     addScript({
       src: 'https://apis.google.com/js/platform.js',
       defer: true,
@@ -26,7 +22,8 @@ const useGoogleAuth = () => {
         });
       });
     };
-  }, [firstTimeLoading]);
+
+  }, []);
 
   /**
    * Request google sign in

@@ -2,6 +2,9 @@
 
 const nextConfig = {
   reactStrictMode: true,
+  experimental: {
+    outputStandalone: true
+  },
   async rewrites() {
     return [
       {

@@ -1,7 +1,8 @@
-import Head from "next/head";
-import Link from "next/link";
-import createUser from "../components/Auth/createUser";
-import RegistrationForm from "../components/Auth/RegistrationForm";
+import Head from 'next/head';
+import Link from 'next/link';
+
+import RegistrationForm from '../components/Auth/RegistrationForm';
+import createUser from '../components/Auth/createUser';
 
 function Register() {
   return (
@@ -11,7 +12,7 @@ function Register() {
         <meta
           name="description"
           content={
-            "Create a new Awaken account. Start being productive and join a community of doers."
+            'Create a new Awaken account. Start being productive and join a community of doers.'
           }
         ></meta>
       </Head>
@@ -27,11 +28,11 @@ function Register() {
       </div>
 
       <div className="bg-gray-50 w-full flex relative overflow-auto py-12">
-        <RegistrationForm createUser={createUser} redirectURL={"/dashboard"} />
+        <RegistrationForm createUser={createUser} redirectURL={'/dashboard'} />
 
         <nav className="absolute text-gray-600 right-0 px-10  top-0 py-2">
           Have an account? &nbsp;
-          <Link href={"/login"}>
+          <Link href={'/login'}>
             <a className="text-primary-600 border-b-2 border-dotted border-primary-800 ">
               Login
             </a>
@@ -41,6 +42,5 @@ function Register() {
     </div>
   );
 }
-
 
 export default Register;

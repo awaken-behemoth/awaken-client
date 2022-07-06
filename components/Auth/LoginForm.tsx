@@ -1,16 +1,18 @@
-import { Url } from "url";
-import Hr from "../HTMLTags/Hr";
-import Input from "../HTMLTags/Input";
-import Notice from "../HTMLTags/Notice";
-import { useRouter } from "next/router";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import UserCredentials from "./UserCredentials";
-import GoogleAuthHeader from "./GoogleAuthHeader";
-import DynamicHeight from "../Effect/DynamicHeight";
-import useControlledRequest from "../../utils/hook/useControlledRequest";
-import Link from "next/link";
-import LazyDynamicHeight from "../Effect/LazyDynamicHeight";
+import { Url } from 'url';
+
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+
+import useControlledRequest from '../../utils/hook/useControlledRequest';
+import LazyDynamicHeight from '../Effect/LazyDynamicHeight';
+import Hr from '../HTMLTags/Hr';
+import Input from '../HTMLTags/Input';
+import Notice from '../HTMLTags/Notice';
+
+import GoogleAuthHeader from './GoogleAuthHeader';
+import UserCredentials from './UserCredentials';
 
 interface Props {
   /**
@@ -18,7 +20,9 @@ interface Props {
    * upon click of the registration or google login button;
    */
 
-  logUserIn: (userCredentials: UserCredentials) => Promise<{ status: number }>;
+  logUserIn: (userCredentials: UserCredentials) => Promise<{
+    status: number;
+  }>;
 
   /**
    * Redirection Uri after user registration
@@ -29,11 +33,7 @@ interface Props {
 const LoginForm: React.FC<Props> = ({ logUserIn, redirectURL }) => {
   const router = useRouter();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+  const { register, handleSubmit } = useForm();
 
   const controller = useControlledRequest(2000);
 
@@ -60,21 +60,25 @@ const LoginForm: React.FC<Props> = ({ logUserIn, redirectURL }) => {
 
         <LazyDynamicHeight>
           {controller.status === 401 ?? (
-            <Notice color={"red"}>Wrong username or password</Notice>
+            <Notice color={'red'}>Wrong username or password</Notice>
           )}
         </LazyDynamicHeight>
 
         <Input
           label="Email"
           type="email"
-          {...register("email", { required: true })}
+          {...register('email', {
+            required: true
+          })}
         ></Input>
 
         <Input
           label="Password"
           type="password"
           autoComplete="new-password"
-          {...register("password", { required: true })}
+          {...register('password', {
+            required: true
+          })}
         ></Input>
 
         <button

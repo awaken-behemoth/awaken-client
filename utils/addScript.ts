@@ -1,11 +1,7 @@
-import { DetailedHTMLProps, ScriptHTMLAttributes } from "react";
-
-
-
 interface ScriptAttr {
-    src: string,
-    defer?: boolean,
-    async?: boolean,
+  src: string;
+  defer?: boolean;
+  async?: boolean;
 }
 
 /**
@@ -15,13 +11,13 @@ interface ScriptAttr {
  * @returns reference to created script element
  */
 
-const addScript = (
-  config: ScriptAttr
-) => {
-  var script = document.createElement("script");
-  script.type = "text/javascript";
+const addScript = (config: ScriptAttr) => {
+  const script = document.createElement('script');
+  script.type = 'text/javascript';
 
-  Object.keys(config).forEach( ( attr:keyof ScriptAttr ) => script[attr] = config[attr] as never);
+  Object.keys(config).forEach(
+    (attr: keyof ScriptAttr) => (script[attr] = config[attr] as never)
+  );
 
   document.head.appendChild(script);
 

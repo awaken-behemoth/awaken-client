@@ -1,9 +1,10 @@
-import "../styles/globals.css";
-import { NextPage } from "next";
-import { AppProps } from "next/app";
-import Wrapper from "../components/Layout/PageWrapper";
-import { JSXElementConstructor, ReactElement, useState } from "react";
-import { Hydrate, QueryClient, QueryClientProvider } from "react-query";
+import '../styles/globals.css';
+import { NextPage } from 'next';
+import { AppProps } from 'next/app';
+import { JSXElementConstructor, ReactElement, useState } from 'react';
+import { Hydrate, QueryClient, QueryClientProvider } from 'react-query';
+
+import Wrapper from '../components/Layout/PageWrapper';
 
 /** Next js page that uses dynamic layout */
 type NextPageWithLayout = NextPage & {
@@ -24,7 +25,7 @@ const MyApp: React.FC<AppPropsWithLayout> = ({ Component, pageProps }) => {
   return (
     <QueryClientProvider client={queryClient}>
       <Hydrate state={pageProps.dehydratedState}>
-        <Wrapper child={getLayout(<Component {...pageProps} />)} ></Wrapper>
+        <Wrapper child={getLayout(<Component {...pageProps} />)}></Wrapper>
       </Hydrate>
     </QueryClientProvider>
   );

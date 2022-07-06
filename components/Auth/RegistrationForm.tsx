@@ -1,23 +1,28 @@
-import { Url } from "url";
-import Hr from "../HTMLTags/Hr";
-import Input from "../HTMLTags/Input";
-import Notice from "../HTMLTags/Notice";
-import { useRouter } from "next/router";
-import React, { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import useGoogleAuth from "./useGoogleAuth";
-import UserCredentials from "./UserCredentials";
-import GoogleAuthHeader from "./GoogleAuthHeader";
-import AttemptState from "../../enum/AttemptState";
-import useControlledRequest from "../../utils/hook/useControlledRequest";
-import LazyDynamicHeight from "../Effect/LazyDynamicHeight";
+import { Url } from 'url';
+
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
+import { useForm } from 'react-hook-form';
+
+import AttemptState from '../../enum/AttemptState';
+import useControlledRequest from '../../utils/hook/useControlledRequest';
+import LazyDynamicHeight from '../Effect/LazyDynamicHeight';
+import Hr from '../HTMLTags/Hr';
+import Input from '../HTMLTags/Input';
+import Notice from '../HTMLTags/Notice';
+
+import GoogleAuthHeader from './GoogleAuthHeader';
+import UserCredentials from './UserCredentials';
+import useGoogleAuth from './useGoogleAuth';
 
 interface Props {
   /**
    * The function that should be users to create a new user
    * upon click of the registration or google login button;
    */
-  createUser: (userCredentials: UserCredentials) => Promise<{ status: number }>;
+  createUser: (userCredentials: UserCredentials) => Promise<{
+    status: number;
+  }>;
 
   /**
    * Redirection Uri after user registration
@@ -47,7 +52,7 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors }
   } = useForm<{
     password: string;
     email: string;
@@ -55,9 +60,18 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
   }>({
     resolver: (input) => {
       if (input.password !== input.password_confirmation)
-        return { errors: { password: "password mismatch" }, values: input };
-      else return { values: input, errors: {} };
-    },
+        return {
+          errors: {
+            password: 'password mismatch'
+          },
+          values: input
+        };
+      else
+        return {
+          values: input,
+          errors: {}
+        };
+    }
   });
 
   return (
@@ -75,37 +89,42 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
         <LazyDynamicHeight>
           {controller.status === 409 &&
             controller.state !== AttemptState.LOADING && (
-              <Notice color={"red"}>
+              <Notice color={'red'}>
                 Account using these email has already been registered
               </Notice>
             )}
-            
         </LazyDynamicHeight>
 
         <Input
           label="Email"
           type="email"
-          {...register("email", { required: true })}
+          {...register('email', {
+            required: true
+          })}
         ></Input>
 
         <Input
           label="Password"
           type="password"
           autoComplete="new-password"
-          {...register("password", { required: true })}
+          {...register('password', {
+            required: true
+          })}
         ></Input>
 
         <Input
           label="confirm password"
           type="password"
           autoComplete="new-password"
-          {...register("password_confirmation", { required: true })}
+          {...register('password_confirmation', {
+            required: true
+          })}
         ></Input>
 
         <LazyDynamicHeight>
           {errors.password && (
-            <Notice color={"yellow"} className={" mb-2"}>
-              {" "}
+            <Notice color={'yellow'} className={' mb-2'}>
+              {' '}
               {errors.password}
             </Notice>
           )}
@@ -115,7 +134,7 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
           type="submit"
           className="mt-2 px-7 bg-primary-700 text-white py-2 mb-4 active:bg-primary-600"
           style={{
-            opacity: controller.state === AttemptState.LOADING ? 0.9 : 1,
+            opacity: controller.state === AttemptState.LOADING ? 0.9 : 1
           }}
         >
           Register
@@ -130,7 +149,9 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
         className="mt-2 px-7 border-red-500  text-red-800 py-2 border"
         onClick={async () => {
           const googleIdToken = await getGoogleIdToken();
-          requestUserCreation({ googleIdToken });
+          requestUserCreation({
+            googleIdToken
+          });
         }}
       >
         Google

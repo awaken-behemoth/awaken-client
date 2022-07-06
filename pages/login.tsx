@@ -1,18 +1,19 @@
-import { motion } from "framer-motion";
-import Head from "next/head";
-import Link from "next/link";
-import LoginForm from "../components/Auth/LoginForm";
-import LogUserIn from "../components/Auth/logUserIn";
+import { motion } from 'framer-motion';
+import Head from 'next/head';
+import Link from 'next/link';
+
+import LoginForm from '../components/Auth/LoginForm';
+import LogUserIn from '../components/Auth/logUserIn';
 
 function Login() {
   return (
-    <motion.div className="flex h-full" key="Login"  >
+    <motion.div className="flex h-full" key="Login">
       <Head>
         <title>Login awaken</title>
         <meta
           name="description"
           content={
-            "Create a new Awaken account. Start being productive and join a community of doers."
+            'Create a new Awaken account. Start being productive and join a community of doers.'
           }
         ></meta>
       </Head>
@@ -26,11 +27,11 @@ function Login() {
         </h2>
       </div>
       <div className="bg-gray-50 w-full flex relative overflow-auto py-12">
-        <LoginForm logUserIn={LogUserIn} redirectURL={"/dashboard"} />
+        <LoginForm logUserIn={LogUserIn} redirectURL={'/dashboard'} />
 
         <nav className="absolute text-gray-600 right-0 px-10  top-0 py-2">
           New here ? &nbsp;
-          <Link href={"/register"}>
+          <Link href={'/register'}>
             <a className="text-primary-600 border-b-2 border-dotted border-primary-800 ">
               Register
             </a>

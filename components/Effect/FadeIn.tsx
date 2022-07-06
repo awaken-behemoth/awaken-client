@@ -1,5 +1,5 @@
-import React from "react";
-import { AnimatePresence, AnimationProps, motion } from "framer-motion";
+import { AnimatePresence, AnimationProps, motion } from 'framer-motion';
+import React from 'react';
 
 interface Props
   extends React.DetailedHTMLProps<
@@ -9,7 +9,7 @@ interface Props
   id: string;
   delay?: number;
   visible: boolean;
-  transition?: AnimationProps["transition"];
+  transition?: AnimationProps['transition'];
   preserve?: boolean;
   className?: string;
   onClick?: () => void;
@@ -20,29 +20,29 @@ interface Props
 const variants = {
   from_big: {
     scale: 1.2,
-    opacity: 0,
+    opacity: 0
   },
   from_left: {
     x: -20,
-    opacity: 0,
+    opacity: 0
   },
   simple: {
-    opacity: 0,
+    opacity: 0
   },
   from_bottom: {
     y: 20,
-    opacity: 0,
+    opacity: 0
   },
   from_top: {
     y: -20,
-    opacity: 0,
+    opacity: 0
   },
   visible: {
-    y: "-100%",
-    x: "-100%",
+    y: '-100%',
+    x: '-100%',
     scale: 1,
-    opacity: 1,
-  },
+    opacity: 1
+  }
 };
 const FadeIn: React.FC<Props> = ({
   id,
@@ -54,7 +54,7 @@ const FadeIn: React.FC<Props> = ({
   children,
   className,
   preserve,
-  transition,
+  transition
 }) => {
   if (preserve)
     return (
@@ -64,10 +64,14 @@ const FadeIn: React.FC<Props> = ({
         style={style}
         initial={type}
         onClick={onClick}
-        animate={(visible && "visible") || type}
+        animate={(visible && 'visible') || type}
         variants={variants}
-        className={className + " block"}
-        transition={{ type: "linear", delay, ...transition }}
+        className={className + ' block'}
+        transition={{
+          type: 'linear',
+          delay,
+          ...transition
+        }}
       >
         {children}
       </motion.span>
@@ -83,10 +87,14 @@ const FadeIn: React.FC<Props> = ({
           data-cy={id}
           initial={type}
           onClick={onClick}
-          animate={"visible"}
+          animate={'visible'}
           variants={variants}
           className={className}
-          transition={{ type: "linear", delay, ...transition }}
+          transition={{
+            type: 'linear',
+            delay,
+            ...transition
+          }}
         >
           {children}
         </motion.div>

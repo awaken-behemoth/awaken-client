@@ -1,6 +1,4 @@
-import Head from "next/head";
-import useGoogleAuth from "./useGoogleAuth";
-
+import Head from 'next/head';
 
 /**
  * This header is required to be present for a page that uses {@link useGoogleAuth}

@@ -1,11 +1,7 @@
-import {
-  AnimatePresence,
-  motion,
-  MotionProps,
-} from "framer-motion";
-import React from "react";
+import { AnimatePresence, motion, MotionProps } from 'framer-motion';
+import React from 'react';
 
-interface DynamicHeightProps extends MotionProps {}
+type DynamicHeightProps = MotionProps;
 
 const DynamicHeight: React.FC<DynamicHeightProps> = ({
   children,
@@ -16,9 +12,15 @@ const DynamicHeight: React.FC<DynamicHeightProps> = ({
       {children && (
         <motion.div
           key="modal"
-          initial={{ height: 0 }}
-          animate={{ height: "auto" }}
-          exit={{ height: 0 }}
+          initial={{
+            height: 0
+          }}
+          animate={{
+            height: 'auto'
+          }}
+          exit={{
+            height: 0
+          }}
           {...props}
         >
           {children}

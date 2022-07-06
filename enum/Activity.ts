@@ -1,8 +1,6 @@
-
-
 enum Activity {
-    REST,
-    ACTIVE
+  REST,
+  ACTIVE
 }
 
-export default  Activity;
+export default Activity;

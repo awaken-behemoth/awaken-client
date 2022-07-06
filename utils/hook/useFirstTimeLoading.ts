@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 /**
  * Hook that indicate it's the first time the component is loading

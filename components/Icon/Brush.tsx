@@ -1,6 +1,6 @@
-import { HTMLProps, SVGProps } from "react";
+import { SVGProps } from 'react';
 
-interface BrushProps extends SVGProps<SVGSVGElement> {}
+type BrushProps = SVGProps<SVGSVGElement>;
 
 const Brush: React.FC<BrushProps> = ({ ...props }) => {
   return (

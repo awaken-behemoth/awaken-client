@@ -1,6 +1,8 @@
-import { useState } from "react";
-import AttemptState from "../../enum/AttemptState";
-import useAtomicState from "./useAtomicState";
+import { useState } from 'react';
+
+import AttemptState from '../../enum/AttemptState';
+
+import useAtomicState from './useAtomicState';
 
 /**
  *
@@ -11,21 +13,24 @@ import useAtomicState from "./useAtomicState";
  * @returns requestController with method to control the request state;
  */
 const useControlledRequest = (
-  delayBeforeRest: number = 5000,
+  delayBeforeRest = 5000,
   successfulStatusCode: number[] = [200]
 ) => {
   const [status, setStatus] = useState<number>(undefined);
-
 
   const [state, setState] = useAtomicState<number>(AttemptState.REST);
 
   /**
    * Makes an api request while updating the request state;
-   * 
-   * @param request request function that returns a promise 
+   *
+   * @param request request function that returns a promise
    * @param config configurations
    */
-  async function makeRequest<T extends { status: number }>(
+  async function makeRequest<
+    T extends {
+      status: number;
+    }
+  >(
     request: () => Promise<T>,
     config?: {
       delayBeforeRest: number;
@@ -46,13 +51,12 @@ const useControlledRequest = (
     setTimeout(() => {
       updateStateAtomically(AttemptState.REST);
     }, config?.delayBeforeRest || delayBeforeRest);
-
   }
 
   return {
     makeRequest,
     state,
-    status,
+    status
   };
 };
 

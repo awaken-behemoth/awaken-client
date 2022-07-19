@@ -2,7 +2,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 
 import RegistrationForm from '../components/Auth/RegistrationForm';
-import createUser from '../components/Auth/createUser';
+import { createUser } from '../components/Auth/userService';
 
 function Register() {
   return (

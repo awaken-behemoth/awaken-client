@@ -3,7 +3,7 @@ import Head from 'next/head';
 import Link from 'next/link';
 
 import LoginForm from '../components/Auth/LoginForm';
-import LogUserIn from '../components/Auth/logUserIn';
+import { LogUserIn } from '../components/Auth/userService';
 
 function Login() {
   return (

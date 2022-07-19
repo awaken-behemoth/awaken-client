@@ -1,17 +1,10 @@
 import Head from 'next/head';
 
 /**
- * This header is required to be present for a page that uses {@link useGoogleAuth}
+ * This header is required to be present for a page that uses
  */
 const GoogleAuthHeader = () => {
-  return (
-    <Head>
-      <meta
-        name="google-signin-client_id"
-        content="624562493638-8nt1s7i13f0fdkh1tdqt9ip5s9omm1uf.apps.googleusercontent.com"
-      />
-    </Head>
-  );
+  return <Head></Head>;
 };
 
 export default GoogleAuthHeader;

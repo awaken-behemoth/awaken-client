@@ -3,6 +3,7 @@ import { Url } from 'url';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
+import { GoogleLoginResponse, useGoogleLogin } from 'react-google-login';
 import { useForm } from 'react-hook-form';
 
 import useControlledRequest from '../../utils/hook/useControlledRequest';
@@ -11,7 +12,6 @@ import Hr from '../HTMLTags/Hr';
 import Input from '../HTMLTags/Input';
 import Notice from '../HTMLTags/Notice';
 
-import GoogleAuthHeader from './GoogleAuthHeader';
 import UserCredentials from './UserCredentials';
 
 interface Props {
@@ -33,7 +33,10 @@ interface Props {
 const LoginForm: React.FC<Props> = ({ logUserIn, redirectURL }) => {
   const router = useRouter();
 
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit } = useForm<{
+    email: 'string';
+    password: 'string';
+  }>();
 
   const controller = useControlledRequest(2000);
 
@@ -42,6 +45,18 @@ const LoginForm: React.FC<Props> = ({ logUserIn, redirectURL }) => {
       return await logUserIn(userCredentials);
     });
   };
+
+  const { signIn } = useGoogleLogin({
+    onSuccess: (response) => {
+      if (response.code) return;
+
+      logUserIn({
+        type: 'google',
+        googleAccessToken: (response as GoogleLoginResponse).accessToken
+      });
+    },
+    clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
+  });
 
   useEffect(() => {
     if (redirectURL && controller.status == 200) {
@@ -52,9 +67,10 @@ const LoginForm: React.FC<Props> = ({ logUserIn, redirectURL }) => {
   return (
     <div
       className="flex flex-col  max-w-full p-8 bg-white border-2 border-gray-300 rounded-md h-fit m-auto w-[26rem]"
-      onSubmit={handleSubmit(requestUserLogin)}
+      onSubmit={handleSubmit((form) =>
+        requestUserLogin({ type: 'basic', ...form })
+      )}
     >
-      <GoogleAuthHeader />
       <form className="flex flex-col">
         <h1 className="text-3xl font-extrabold text-primary-800 mb-4">Login</h1>
 
@@ -75,7 +91,7 @@ const LoginForm: React.FC<Props> = ({ logUserIn, redirectURL }) => {
         <Input
           label="Password"
           type="password"
-          autoComplete="new-password"
+          autoComplete="password"
           {...register('password', {
             required: true
           })}
@@ -92,7 +108,10 @@ const LoginForm: React.FC<Props> = ({ logUserIn, redirectURL }) => {
         or login with
       </Hr>
 
-      <button className="mt-2 px-7 border-red-500  text-red-800 py-2 border">
+      <button
+        className="mt-2 px-7 border-red-500  text-red-800 py-2 border"
+        onClick={signIn}
+      >
         Google
       </button>
 

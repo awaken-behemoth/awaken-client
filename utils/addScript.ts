@@ -21,7 +21,15 @@ const addScript = (config: ScriptAttr) => {
 
   document.head.appendChild(script);
 
-  return script;
+  new Promise((resolve) => {
+    script.onload = resolve;
+  });
+
+  return new Promise(
+    (resolve: (this: GlobalEventHandlers, ev: Event) => any) => {
+      script.onload = resolve;
+    }
+  );
 };
 
 export default addScript;

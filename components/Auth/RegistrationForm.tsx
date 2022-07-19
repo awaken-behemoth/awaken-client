@@ -2,6 +2,7 @@ import { Url } from 'url';
 
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
+import { GoogleLoginResponse, useGoogleLogin } from 'react-google-login';
 import { useForm } from 'react-hook-form';
 
 import AttemptState from '../../enum/AttemptState';
@@ -13,7 +14,6 @@ import Notice from '../HTMLTags/Notice';
 
 import GoogleAuthHeader from './GoogleAuthHeader';
 import UserCredentials from './UserCredentials';
-import useGoogleAuth from './useGoogleAuth';
 
 interface Props {
   /**
@@ -32,16 +32,17 @@ interface Props {
 
 const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
   const router = useRouter();
-  const { getGoogleIdToken } = useGoogleAuth();
 
   const controller = useControlledRequest(2000);
 
+  /** Create user */
   const requestUserCreation = (userCredentials: UserCredentials) => {
     controller.makeRequest(async () => {
       return await createUser(userCredentials);
     });
   };
 
+  // Redirect depending on status
   useEffect(() => {
     if (redirectURL && controller.status == 200) {
       router.push(redirectURL);
@@ -57,30 +58,29 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
     password: string;
     email: string;
     password_confirmation: string;
-  }>({
-    resolver: (input) => {
-      if (input.password !== input.password_confirmation)
-        return {
-          errors: {
-            password: 'password mismatch'
-          },
-          values: input
-        };
-      else
-        return {
-          values: input,
-          errors: {}
-        };
-    }
+  }>();
+
+  // Google Oauth 2
+  const { signIn, loaded } = useGoogleLogin({
+    onSuccess: (response) => {
+      if (response.code) return;
+
+      createUser({
+        type: 'google',
+        googleAccessToken: (response as GoogleLoginResponse).accessToken
+      });
+    },
+    clientId: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
   });
 
   return (
     <div
       className="flex flex-col p-8 m-auto bg-white border-2 border-gray-300 rounded-md w-[26rem]"
-      onSubmit={handleSubmit(requestUserCreation)}
+      onSubmit={handleSubmit((form) =>
+        requestUserCreation({ type: 'basic', ...form })
+      )}
     >
       <GoogleAuthHeader />
-
       <form className="flex flex-col">
         <h1 className="text-3xl font-extrabold text-primary-800 mb-4">
           Register
@@ -140,23 +140,16 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
           Register
         </button>
       </form>
-
       <Hr padding="0.5em" className="text-gray-500">
         or register with
       </Hr>
-
       <button
-        className="mt-2 px-7 border-red-500  text-red-800 py-2 border"
-        onClick={async () => {
-          const googleIdToken = await getGoogleIdToken();
-          requestUserCreation({
-            googleIdToken
-          });
-        }}
+        onClick={signIn}
+        disabled={!loaded}
+        className="mt-2 px-7 border-red-500  text-red-800 py-2 border-2 rounded disabled:border-slate-300"
       >
         Google
       </button>
-
       <a className="mt-8 text-primary-900 underline">Forgot Password?</a>
     </div>
   );

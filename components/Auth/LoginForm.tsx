@@ -29,7 +29,7 @@ interface Props {
   redirectURL?: Url | string;
 }
 
-const LoginForm: React.FC<Props> = ({ logUserIn, redirectURL }) => {
+const LoginForm: React.FC<Props> = ({ mutation, redirectURL }) => {
   const router = useRouter();
 
   const { register, handleSubmit } = useForm<{
@@ -40,16 +40,14 @@ const LoginForm: React.FC<Props> = ({ logUserIn, redirectURL }) => {
   const controller = useControlledRequest(2000);
 
   const requestUserLogin = (userCredentials: UserCredentials) => {
-    controller.makeRequest(async () => {
-      return await logUserIn(userCredentials);
-    });
+    mutation.mutate(userCredentials);
   };
 
   const { signIn } = useGoogleLogin({
     onSuccess: (response) => {
       if (response.code) return;
 
-      logUserIn({
+      mutation.mutate({
         type: 'google',
         googleAccessToken: (response as GoogleLoginResponse).accessToken
       });

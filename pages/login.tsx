@@ -1,11 +1,17 @@
 import { motion } from 'framer-motion';
 import Head from 'next/head';
 import Link from 'next/link';
+import { useMutation } from 'react-query';
 
 import LoginForm from '../components/Auth/LoginForm';
+import UserCredentials from '../components/Auth/UserCredentials';
 import { LogUserIn } from '../components/Auth/userService';
 
 function Login() {
+  const loginMutation = useMutation((credentials: UserCredentials) => {
+    return LogUserIn(credentials);
+  });
+
   return (
     <motion.div className="flex h-full" key="Login">
       <Head>
@@ -27,7 +33,7 @@ function Login() {
         </h2>
       </div>
       <div className="bg-gray-50 w-full flex relative overflow-auto py-12">
-        <LoginForm logUserIn={LogUserIn} redirectURL={'/dashboard'} />
+        <LoginForm mutation={loginMutation} redirectURL={'/dashboard'} />
 
         <nav className="absolute text-gray-600 right-0 px-10  top-0 py-2">
           New here ? &nbsp;

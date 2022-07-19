@@ -9,9 +9,9 @@ import UserCredentials from './UserCredentials';
  * @returns a promise with a status code
  */
 export const LogUserIn = async (userCredentials: UserCredentials) => {
-  return (await axios
+  return await axios
     .post('/api/auth/login', userCredentials)
-    .catch((error : AxiosError) => error.response));
+    .catch((error: AxiosError) => error.response);
 };
 
 /**
@@ -21,7 +21,7 @@ export const LogUserIn = async (userCredentials: UserCredentials) => {
  * @returns a promise;
  */
 export const createUser = async (userCredentials: UserCredentials) => {
-  return (await axios
+  return await axios
     .post('/api/user', userCredentials)
-    .catch((error : AxiosError) => error.response)) ;
+    .catch((error: AxiosError) => error.response);
 };

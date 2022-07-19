@@ -4,15 +4,13 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { GoogleLoginResponse, useGoogleLogin } from 'react-google-login';
 import { useForm } from 'react-hook-form';
+import { UseMutationResult } from 'react-query';
 
-import AttemptState from '../../enum/AttemptState';
-import useControlledRequest from '../../utils/hook/useControlledRequest';
 import LazyDynamicHeight from '../Effect/LazyDynamicHeight';
 import Hr from '../HTMLTags/Hr';
 import Input from '../HTMLTags/Input';
 import Notice from '../HTMLTags/Notice';
 
-import GoogleAuthHeader from './GoogleAuthHeader';
 import UserCredentials from './UserCredentials';
 
 interface Props {
@@ -20,9 +18,7 @@ interface Props {
    * The function that should be users to create a new user
    * upon click of the registration or google login button;
    */
-  createUser: (userCredentials: UserCredentials) => Promise<{
-    status: number;
-  }>;
+  mutation: UseMutationResult<any, unknown, UserCredentials, unknown>;
 
   /**
    * Redirection Uri after user registration
@@ -30,24 +26,20 @@ interface Props {
   redirectURL?: Url | string;
 }
 
-const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
+const RegistrationForm: React.FC<Props> = ({ mutation, redirectURL }) => {
   const router = useRouter();
-
-  const controller = useControlledRequest(2000);
 
   /** Create user */
   const requestUserCreation = (userCredentials: UserCredentials) => {
-    controller.makeRequest(async () => {
-      return await createUser(userCredentials);
-    });
+    return mutation.mutate(userCredentials);
   };
 
   // Redirect depending on status
   useEffect(() => {
-    if (redirectURL && controller.status == 200) {
+    if (redirectURL && mutation.isSuccess) {
       router.push(redirectURL);
     }
-  }, [controller.status, redirectURL, router]);
+  }, [mutation.isSuccess, redirectURL, router]);
 
   // Forms controls;
   const {
@@ -65,7 +57,7 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
     onSuccess: (response) => {
       if (response.code) return;
 
-      createUser({
+      mutation.mutate({
         type: 'google',
         googleAccessToken: (response as GoogleLoginResponse).accessToken
       });
@@ -80,19 +72,17 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
         requestUserCreation({ type: 'basic', ...form })
       )}
     >
-      <GoogleAuthHeader />
       <form className="flex flex-col">
         <h1 className="text-3xl font-extrabold text-primary-800 mb-4">
           Register
         </h1>
 
         <LazyDynamicHeight>
-          {controller.status === 409 &&
-            controller.state !== AttemptState.LOADING && (
-              <Notice color={'red'}>
-                Account using these email has already been registered
-              </Notice>
-            )}
+          {mutation.isError && (
+            <Notice color={'red'}>
+              Account using these email has already been registered
+            </Notice>
+          )}
         </LazyDynamicHeight>
 
         <Input
@@ -134,7 +124,7 @@ const RegistrationForm: React.FC<Props> = ({ createUser, redirectURL }) => {
           type="submit"
           className="mt-2 px-7 bg-primary-700 text-white py-2 mb-4 active:bg-primary-600"
           style={{
-            opacity: controller.state === AttemptState.LOADING ? 0.9 : 1
+            opacity: mutation.isLoading ? 0.9 : 1
           }}
         >
           Register

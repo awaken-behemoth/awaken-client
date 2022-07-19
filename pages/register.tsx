@@ -1,10 +1,16 @@
 import Head from 'next/head';
 import Link from 'next/link';
+import { useMutation } from 'react-query';
 
 import RegistrationForm from '../components/Auth/RegistrationForm';
+import UserCredentials from '../components/Auth/UserCredentials';
 import { createUser } from '../components/Auth/userService';
 
 function Register() {
+  const registerMutation = useMutation((credentials: UserCredentials) => {
+    return createUser(credentials);
+  });
+
   return (
     <div className="flex h-full" key="Register">
       <Head>
@@ -28,7 +34,10 @@ function Register() {
       </div>
 
       <div className="bg-gray-50 w-full flex relative overflow-auto py-12">
-        <RegistrationForm createUser={createUser} redirectURL={'/dashboard'} />
+        <RegistrationForm
+          mutation={registerMutation}
+          redirectURL={'/dashboard'}
+        />
 
         <nav className="absolute text-gray-600 right-0 px-10  top-0 py-2">
           Have an account? &nbsp;

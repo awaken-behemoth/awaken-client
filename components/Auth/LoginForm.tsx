@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { GoogleLoginResponse, useGoogleLogin } from 'react-google-login';
 import { useForm } from 'react-hook-form';
+import { UseMutationResult } from 'react-query';
 
 import useControlledRequest from '../../utils/hook/useControlledRequest';
 import LazyDynamicHeight from '../Effect/LazyDynamicHeight';
@@ -20,9 +21,7 @@ interface Props {
    * upon click of the registration or google login button;
    */
 
-  logUserIn: (userCredentials: UserCredentials) => Promise<{
-    status: number;
-  }>;
+  mutation: UseMutationResult<any, unknown, UserCredentials, unknown>;
 
   /**
    * Redirection Uri after user registration

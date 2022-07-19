@@ -1,13 +1,13 @@
 /** Username and password used in Basic authentication */
 export type UserCredentialsBasic = {
-  type: "basic",
+  type: 'basic';
   email: string;
   password: string;
 };
 
 /** GoogleToken used in google Oauth authentication  */
 export type UserCredentialsGoogle = {
-  type: "google",
+  type: 'google';
   googleAccessToken: string;
 };
 
